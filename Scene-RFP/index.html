@@ -154,6 +154,19 @@
     font-size: 14px; color: var(--text-secondary); padding: 2px 0;
     line-height: 1.4;
   }
+  /* Slide 5: collapsible category lists */
+  .platform-category { cursor: pointer; user-select: none; }
+  .platform-category h4 { position: relative; padding-left: 14px; }
+  .platform-category h4::before {
+    content: '\25B8'; position: absolute; left: 0; top: 50%;
+    transform: translateY(-50%); font-size: 11px;
+    transition: transform 0.15s ease;
+  }
+  .platform-category.expanded h4::before {
+    transform: translateY(-50%) rotate(90deg);
+  }
+  .platform-category ul { display: none; }
+  .platform-category.expanded ul { display: block; }
   .platform-integrations {
     margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border);
   }
@@ -652,6 +665,15 @@
     if (e.target.closest('.nav-bar')) return;
     const x = e.clientX / window.innerWidth;
     if (x > 0.5) handleForward(); else handleBack();
+  });
+
+  // Slide 5: click a category heading to expand/collapse its items.
+  // stopPropagation prevents the global slide-navigation click handler from firing.
+  document.querySelectorAll('.platform-category').forEach(cat => {
+    cat.addEventListener('click', e => {
+      e.stopPropagation();
+      cat.classList.toggle('expanded');
+    });
   });
 </script>
 
