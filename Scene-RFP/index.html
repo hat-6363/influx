@@ -159,13 +159,17 @@
   .platform-category h4::before {
     content: '\25B8'; position: absolute; left: 0; top: 50%;
     transform: translateY(-50%); font-size: 11px;
-    transition: transform 0.15s ease;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .platform-category.expanded h4::before {
     transform: translateY(-50%) rotate(90deg);
   }
-  .platform-category ul { display: none; }
-  .platform-category.expanded ul { display: block; }
+  .platform-category ul {
+    max-height: 0; opacity: 0; overflow: hidden;
+    transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .platform-category.expanded ul { max-height: 220px; opacity: 1; }
   .platform-integrations {
     margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border);
   }
@@ -220,6 +224,12 @@
     width: 5px; height: 5px; border-radius: 50%; background: var(--orange); opacity: 0.5;
   }
   .roadmap-note { font-size: 16px; color: var(--text-muted); font-style: italic; margin-top: 24px; line-height: 1.5; }
+  .roadmap-presenter {
+    margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border);
+    font-family: var(--font-heading); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.8px; text-transform: uppercase; color: var(--text-muted);
+  }
+  .roadmap-presenter strong { color: var(--orange); font-weight: 700; }
 
   /* Roadmap reveal animation */
   .roadmap-step {
@@ -318,6 +328,7 @@
           <div>
             <div class="team-name">Elampooranan Anbalagan</div>
             <div class="team-role">Product Manager</div>
+            <div class="team-tag tag-lead">Demo Presenter</div>
           </div>
         </div>
         <div class="team-member">
@@ -544,6 +555,7 @@
           <li>Marcus Theatres — our latest and finest work</li>
           <li>Paragon &amp; EVO — design variations</li>
         </ul>
+        <div class="roadmap-presenter">Presented by <strong>Hat</strong></div>
       </div>
       <div class="roadmap-step">
         <div class="step-num">02</div>
@@ -553,6 +565,7 @@
           <li>Combos, upsells, upgrades</li>
           <li>Suggestive selling in action</li>
         </ul>
+        <div class="roadmap-presenter">Presented by <strong>Hat</strong></div>
       </div>
       <div class="roadmap-step">
         <div class="step-num">03</div>
@@ -563,6 +576,7 @@
           <li>Suggestive selling setup</li>
           <li>Show-level F&B controls</li>
         </ul>
+        <div class="roadmap-presenter">Presented by <strong>Elam</strong></div>
       </div>
       <div class="roadmap-step">
         <div class="step-num">04</div>
@@ -572,6 +586,7 @@
           <li>Guest wallet visibility</li>
           <li>Day-to-day issue resolution</li>
         </ul>
+        <div class="roadmap-presenter">Presented by <strong>Elam</strong></div>
       </div>
     </div>
     <p class="roadmap-note">All demos use live production environments and real client platforms.</p>
