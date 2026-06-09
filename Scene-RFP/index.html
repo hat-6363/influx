@@ -154,8 +154,7 @@
     font-size: 14px; color: var(--text-secondary); padding: 2px 0;
     line-height: 1.4;
   }
-  /* Slide 5: collapsible category lists */
-  .platform-category { cursor: pointer; user-select: none; }
+  /* Slide 5: collapsible category lists (bulk reveal on forward click/arrow) */
   .platform-category h4 { position: relative; padding-left: 14px; }
   .platform-category h4::before {
     content: '\25B8'; position: absolute; left: 0; top: 50%;
@@ -605,6 +604,19 @@
   const roadmapSteps = document.querySelectorAll('.roadmap-step');
   const totalRoadmapSteps = roadmapSteps.length;
 
+  // Slide 5 (data-slide=4): platform categories — first forward click expands ALL at once
+  const platformSlideIndex = 4;
+  let platformExpanded = false;
+  const platformCategories = document.querySelectorAll('.platform-category');
+  function expandAllPlatform() {
+    platformCategories.forEach(c => c.classList.add('expanded'));
+    platformExpanded = true;
+  }
+  function collapseAllPlatform() {
+    platformCategories.forEach(c => c.classList.remove('expanded'));
+    platformExpanded = false;
+  }
+
   function goTo(n) {
     if (n < 0 || n >= slides.length) return;
     slides[current].classList.remove('active');
@@ -636,6 +648,8 @@
   function handleForward() {
     if (current === roadmapSlideIndex && roadmapRevealCount < totalRoadmapSteps) {
       revealNextStep();
+    } else if (current === platformSlideIndex && !platformExpanded) {
+      expandAllPlatform();
     } else {
       goTo(current + 1);
     }
@@ -645,6 +659,8 @@
     if (current === roadmapSlideIndex && roadmapRevealCount > 0) {
       roadmapRevealCount--;
       roadmapSteps[roadmapRevealCount].classList.remove('revealed');
+    } else if (current === platformSlideIndex && platformExpanded) {
+      collapseAllPlatform();
     } else {
       goTo(current - 1);
     }
@@ -658,6 +674,7 @@
   dots.forEach(dot => dot.addEventListener('click', () => {
     const target = parseInt(dot.dataset.target);
     if (target === roadmapSlideIndex) resetRoadmap();
+    if (target === platformSlideIndex) collapseAllPlatform();
     goTo(target);
   }));
 
@@ -665,15 +682,6 @@
     if (e.target.closest('.nav-bar')) return;
     const x = e.clientX / window.innerWidth;
     if (x > 0.5) handleForward(); else handleBack();
-  });
-
-  // Slide 5: click a category heading to expand/collapse its items.
-  // stopPropagation prevents the global slide-navigation click handler from firing.
-  document.querySelectorAll('.platform-category').forEach(cat => {
-    cat.addEventListener('click', e => {
-      e.stopPropagation();
-      cat.classList.toggle('expanded');
-    });
   });
 </script>
 
